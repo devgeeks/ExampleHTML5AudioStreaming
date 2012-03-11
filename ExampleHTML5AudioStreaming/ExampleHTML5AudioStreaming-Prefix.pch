@@ -1,0 +1,7 @@
+//
+// Prefix header for all source files of the 'ExampleHTML5AudioStreaming' target in the 'ExampleHTML5AudioStreaming' project
+//
+
+#ifdef __OBJC__
+	#import <UIKit/UIKit.h>
+#endif
