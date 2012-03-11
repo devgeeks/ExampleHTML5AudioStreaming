@@ -14,7 +14,7 @@ Here it is.
 
 ### Notes
 
-Although this example project is linked against APhoneGap 1.4.1, it shouldn't matter as no PhoneGap API's are used.... just pure JavaScript. Feel free to relink against the PhoneGap/Cordova of your liking.
+Although this example project is linked against PhoneGap 1.4.1, it shouldn't matter as no PhoneGap API's are used.... just pure JavaScript. Feel free to relink against the PhoneGap/Cordova of your liking.
 
 ## License
 
