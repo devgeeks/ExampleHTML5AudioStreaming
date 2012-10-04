@@ -14,7 +14,18 @@ Here it is.
 
 ### Notes
 
+#### PhoneGap/Cordova
+
 Although this example project is linked against PhoneGap 2.1.0, it shouldn't matter as no PhoneGap API's are used.... just pure JavaScript. Feel free to just use the contents of the `www` folder in a new project instead.
+
+#### Background Audio
+
+If you need background audio, you will need to add the supported modes in your `<Projectname>-info.plist` (in this case, `ExampleHTML5AudioStreaming-Info.plist`):
+
+	<key>UIBackgroundModes</key>
+    	<array>
+        	<string>audio</string>
+    	</array>
 
 ## License
 
