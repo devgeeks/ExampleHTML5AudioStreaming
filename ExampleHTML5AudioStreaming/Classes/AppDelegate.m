@@ -21,25 +21,19 @@
 //  AppDelegate.m
 //  ExampleHTML5AudioStreaming
 //
-//  Created by Carlos Williams on 11/03/12.
-//  Copyright __MyCompanyName__ 2012. All rights reserved.
+//  Created by ___FULLUSERNAME___ on ___DATE___.
+//  Copyright ___ORGANIZATIONNAME___ ___YEAR___. All rights reserved.
 //
 
 #import "AppDelegate.h"
 #import "MainViewController.h"
 
-#ifdef PHONEGAP_FRAMEWORK
-    #import <PhoneGap/PGPlugin.h>
-    #import <PhoneGap/PGURLProtocol.h>
-#else
-    #import "PGPlugin.h"
-    #import "PGURLProtocol.h"
-#endif
+#import <Cordova/CDVPlugin.h>
 
 
 @implementation AppDelegate
 
-@synthesize invokeString, window, viewController;
+@synthesize window, viewController;
 
 - (id) init
 {	
@@ -48,10 +42,9 @@
 	 **/
     NSHTTPCookieStorage *cookieStorage = [NSHTTPCookieStorage sharedHTTPCookieStorage]; 
     [cookieStorage setCookieAcceptPolicy:NSHTTPCookieAcceptPolicyAlways];
-    
-    [PGURLProtocol registerPGHttpURLProtocol];
-    
-    return [super init];
+        
+    self = [super init];
+    return self;
 }
 
 #pragma UIApplicationDelegate implementation
@@ -62,27 +55,25 @@
 - (BOOL) application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {    
     NSURL* url = [launchOptions objectForKey:UIApplicationLaunchOptionsURLKey];
+    NSString* invokeString = nil;
+    
     if (url && [url isKindOfClass:[NSURL class]]) {
-        self.invokeString = [url absoluteString];
+        invokeString = [url absoluteString];
 		NSLog(@"ExampleHTML5AudioStreaming launchOptions = %@", url);
     }    
     
     CGRect screenBounds = [[UIScreen mainScreen] bounds];
-    self.window = [[[UIWindow alloc] initWithFrame:screenBounds] autorelease];
+    self.window = [[UIWindow alloc] initWithFrame:screenBounds];
     self.window.autoresizesSubviews = YES;
     
-    CGRect viewBounds = [[UIScreen mainScreen] applicationFrame];
-    
-    self.viewController = [[[MainViewController alloc] init] autorelease];
+    self.viewController = [[MainViewController alloc] init];
     self.viewController.useSplashScreen = YES;
     self.viewController.wwwFolderName = @"www";
     self.viewController.startPage = @"index.html";
-    self.viewController.view.frame = viewBounds;
-    
-    // over-ride delegates
-    self.viewController.webView.delegate = self;
-    self.viewController.commandDelegate = self;
+    self.viewController.invokeString = invokeString;
 
+    // NOTE: To control the view's frame size, override [self.viewController viewWillAppear:] in your view controller.
+    
     // check whether the current orientation is supported: if it is, keep it, rather than forcing a rotation
     BOOL forceStartupRotation = YES;
     UIDeviceOrientation curDevOrientation = [[UIDevice currentDevice] orientation];
@@ -93,30 +84,34 @@
     }
     
     if (UIDeviceOrientationIsValidInterfaceOrientation(curDevOrientation)) {
-        for (NSNumber *orient in self.viewController.supportedOrientations) {
-            if ([orient intValue] == curDevOrientation) {
-                forceStartupRotation = NO;
-                break;
-            }
-        }
+        if ([self.viewController supportsOrientation:curDevOrientation]) {
+            forceStartupRotation = NO;
+        } 
     } 
     
     if (forceStartupRotation) {
-        NSLog(@"supportedOrientations: %@", self.viewController.supportedOrientations);
-        // The first item in the supportedOrientations array is the start orientation (guaranteed to be at least Portrait)
-        UIInterfaceOrientation newOrient = [[self.viewController.supportedOrientations objectAtIndex:0] intValue];
+        UIInterfaceOrientation newOrient;
+        if ([self.viewController supportsOrientation:UIInterfaceOrientationPortrait])
+            newOrient = UIInterfaceOrientationPortrait;
+        else if ([self.viewController supportsOrientation:UIInterfaceOrientationLandscapeLeft])
+            newOrient = UIInterfaceOrientationLandscapeLeft;
+        else if ([self.viewController supportsOrientation:UIInterfaceOrientationLandscapeRight])
+            newOrient = UIInterfaceOrientationLandscapeRight;
+        else
+            newOrient = UIInterfaceOrientationPortraitUpsideDown;
+
         NSLog(@"AppDelegate forcing status bar to: %d from: %d", newOrient, curDevOrientation);
         [[UIApplication sharedApplication] setStatusBarOrientation:newOrient];
     }
     
-    [self.window addSubview:self.viewController.view];
+    self.window.rootViewController = self.viewController;
     [self.window makeKeyAndVisible];
     
     return YES;
 }
 
 // this happens while we are running ( in the background, or from within our own app )
-// only valid if FooBar.plist specifies a protocol to handle
+// only valid if ExampleHTML5AudioStreaming-Info.plist specifies a protocol to handle
 - (BOOL) application:(UIApplication*)application handleOpenURL:(NSURL*)url 
 {
     if (!url) { 
@@ -128,64 +123,16 @@
     [self.viewController.webView stringByEvaluatingJavaScriptFromString:jsString];
     
     // all plugins will get the notification, and their handlers will be called 
-    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:PGPluginHandleOpenURLNotification object:url]];
+    [[NSNotificationCenter defaultCenter] postNotification:[NSNotification notificationWithName:CDVPluginHandleOpenURLNotification object:url]];
     
     return YES;    
 }
 
-#pragma PGCommandDelegate implementation
-
-- (id) getCommandInstance:(NSString*)className
-{
-	return [self.viewController getCommandInstance:className];
-}
-
-- (BOOL) execute:(InvokedUrlCommand*)command
-{
-	return [self.viewController execute:command];
-}
-
-- (NSString*) pathForResource:(NSString*)resourcepath;
-{
-	return [self.viewController pathForResource:resourcepath];
-}
-
-#pragma UIWebDelegate implementation
-
-- (void) webViewDidFinishLoad:(UIWebView*) theWebView 
-{
-	// only valid if FooBar.plist specifies a protocol to handle
-	if (self.invokeString)
-	{
-		// this is passed before the deviceready event is fired, so you can access it in js when you receive deviceready
-		NSString* jsString = [NSString stringWithFormat:@"var invokeString = \"%@\";", self.invokeString];
-		[theWebView stringByEvaluatingJavaScriptFromString:jsString];
-	}
-	
-	 // Black base color for background matches the native apps
-   	theWebView.backgroundColor = [UIColor blackColor];
-    
-	return [self.viewController webViewDidFinishLoad:theWebView];
-}
-
-- (void) webViewDidStartLoad:(UIWebView*)theWebView 
-{
-	return [self.viewController webViewDidStartLoad:theWebView];
-}
-
-- (void) webView:(UIWebView*)theWebView didFailLoadWithError:(NSError*)error 
-{
-	return [self.viewController webView:theWebView didFailLoadWithError:error];
-}
-
-- (BOOL) webView:(UIWebView*)theWebView shouldStartLoadWithRequest:(NSURLRequest*)request navigationType:(UIWebViewNavigationType)navigationType
-{
-	return [self.viewController webView:theWebView shouldStartLoadWithRequest:request navigationType:navigationType];
-}
-
-- (void) dealloc
-{
-	[super dealloc];
+- (NSUInteger) application:(UIApplication *)application supportedInterfaceOrientationsForWindow:(UIWindow *)window
+{    
+    // IPhone doesn't support upside down by default, while the IPad does.  Override to allow all orientations always, and let the root view controller decide whats allowed (the supported orientations mask gets intersected).
+    NSUInteger supportedInterfaceOrientations = (1 << UIInterfaceOrientationPortrait) | (1 << UIInterfaceOrientationLandscapeLeft) | (1 << UIInterfaceOrientationLandscapeRight) | (1 << UIInterfaceOrientationPortraitUpsideDown);
+    return supportedInterfaceOrientations;
 }
 
 @end
