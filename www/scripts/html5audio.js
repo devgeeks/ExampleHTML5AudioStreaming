@@ -23,7 +23,8 @@ function pad2(number) {
 	return (number < 10 ? '0' : '') + number
 }
 
-var myaudio = new Audio('http://stream.4zzzfm.org.au:789/');
+var myaudioURL = 'http://stream.4zzzfm.org.au:789/';
+var myaudio = new Audio(myaudioURL);
 var isPlaying = false;
 var readyStateInterval = null;
 
@@ -95,7 +96,7 @@ var html5audio = {
 		activityIndicator.style.display = 'none';
 		playButton.style.display = 'block';
 		myaudio = null;
-		myaudio = new Audio('http://stream.4zzzfm.org.au:789/');
+		myaudio = new Audio(myaudioURL);
 		textPosition.innerHTML = '';
 	}
 };
