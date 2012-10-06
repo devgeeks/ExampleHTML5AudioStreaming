@@ -27,6 +27,8 @@ If you need background audio, you will need to add the supported modes in your `
         	<string>audio</string>
     	</array>
 
+*It is also important to note that background audio does **not** work in the iOS Simulator... **only** on an actual device*
+
 ## License
 
 The MIT License
