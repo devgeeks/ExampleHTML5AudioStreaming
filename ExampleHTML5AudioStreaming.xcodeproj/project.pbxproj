@@ -102,7 +102,7 @@
 		30E5649113A7FCAF007403D8 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 		32CA4F630368D1EE00C91783 /* ExampleHTML5AudioStreaming-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ExampleHTML5AudioStreaming-Prefix.pch"; sourceTree = "<group>"; };
 		65F9973D161D570700536621 /* CordovaLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = CordovaLib.xcodeproj; path = CordovaLib/CordovaLib.xcodeproj; sourceTree = "<group>"; };
-		8D1107310486CEB800E47090 /* ExampleHTML5AudioStreaming-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "ExampleHTML5AudioStreaming-Info.plist"; path = "../ExampleHTML5AudioStreaming-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		8D1107310486CEB800E47090 /* ExampleHTML5AudioStreaming-Info.plist */ = {isa = PBXFileReference; explicitFileType = text.plist.info; fileEncoding = 4; name = "ExampleHTML5AudioStreaming-Info.plist"; path = "../ExampleHTML5AudioStreaming-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
