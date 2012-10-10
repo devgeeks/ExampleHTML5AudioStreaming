@@ -27,6 +27,21 @@ If you need background audio, you will need to add the supported modes in your `
         	<string>audio</string>
     	</array>
 
+Also important to note, since iOS6, you must explicitly set the AVAudioSessionCatagory.
+
+http://stackoverflow.com/a/12414719/878602
+
+First, import AVFoundation into your `AppDelegate.m` `#import <AVFoundation/AVFoundation.h>`
+
+Then add the following to `application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions`
+
+```objective-c
+AVAudioSession *audioSession = [AVAudioSession sharedInstance];
+BOOL ok;
+NSError *setCategoryError = nil;
+ok = [audioSession setCategory:AVAudioSessionCategoryPlayback error:&setCategoryError];
+```
+
 *It is also important to note that background audio does* **not** *work in the iOS Simulator...* **only** *on an actual device*
 
 ## License
