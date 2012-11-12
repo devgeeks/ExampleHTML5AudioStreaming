@@ -16,7 +16,7 @@ Here it is.
 
 #### PhoneGap/Cordova
 
-Although this example project is linked against PhoneGap 2.1.0, it shouldn't matter as no PhoneGap API's are used.... just pure JavaScript. Feel free to just use the contents of the `www` folder in a new project instead.
+As no PhoneGap API's are used... just pure JavaScript, there is no PhoneGap / Cordova project included. Feel free to just use the contents of the `www` folder in a new project instead.
 
 #### Background Audio
 
