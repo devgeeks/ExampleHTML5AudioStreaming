@@ -29,7 +29,7 @@ If you need background audio, you will need to add the supported modes in your `
         	<string>audio</string>
     	</array>
 
-Also important to note, since iOS6, you must explicitly set the AVAudioSessionCatagory.
+Also important to note, since iOS6, you must explicitly set the AVAudioSessionCategory.
 
 http://stackoverflow.com/a/12414719/878602
 
