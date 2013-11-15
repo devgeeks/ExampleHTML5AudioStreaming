@@ -1,6 +1,5 @@
 
 
-
 var progressTimer;
 
 var playButton;
@@ -72,12 +71,15 @@ var html5audio = {
 			 //console.log('myaudio ENDED');
 			 html5audio.stop();
 			 // navigator.notification.alert('Streaming failed. Possibly due to a network error.', null, 'Stream error', 'OK');
-			 navigator.notification.confirm(
-				'Streaming failed. Possibly due to a network error.', // message
-				onConfirmRetry,	// callback to invoke with index of button pressed
-				'Stream error',	// title
-				'Retry,OK'		// buttonLabels
-			 );
+			 // navigator.notification.confirm(
+			 //	'Streaming failed. Possibly due to a network error.', // message
+			 //	onConfirmRetry,	// callback to invoke with index of button pressed
+			 //	'Stream error',	// title
+			 //	'Retry,OK'		// buttonLabels
+			 // );
+			 if (window.confirm('Streaming failed. Possibly due to a network error. Retry?')) {
+			 	onConfirmRetry();
+			 }
 		}, false);
 	},
 	pause: function() {
