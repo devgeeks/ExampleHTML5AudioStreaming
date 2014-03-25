@@ -12,6 +12,9 @@
     <author href="http://devgeeks.org" email="tommy@devgeeks.org">
         Tommy-Carlos Williams
     </author>
+    
+    <access origin="4zzzfm.org.au" subdomains="true" />
+    <access origin="devgeeks" subdomains="true" />
 
     <feature name="http://api.phonegap.com/1.0/device" />
 
