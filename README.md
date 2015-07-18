@@ -1,6 +1,5 @@
 ## Example project showing audio streaming using HTML5 Audio with PhoneGap on iOS
 
-https://build.phonegap.com/apps/242993
 
 ### Why is this here?
 
